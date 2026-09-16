@@ -130,35 +130,30 @@ export default async function ServicePage({ params }: PageProps) {
           </div>
 
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="rounded-3xl bg-emphasis p-6 text-emphasis-fg shadow-card">
-              <p className="text-xs font-semibold tracking-wide text-emphasis-accent uppercase">
+            <div className="rounded-3xl border border-border bg-surface p-6">
+              <p className="text-xs font-semibold tracking-wide text-accent-text uppercase">
                 Стоимость
               </p>
               <p className="mt-2 flex items-baseline gap-2">
-                <span className="text-sm opacity-70">от</span>
+                <span className="text-sm text-muted">от</span>
                 <span className="font-heading text-4xl font-extrabold">
                   {formatPrice(service.priceFrom)}
                 </span>
               </p>
-              <p className="text-sm opacity-70">{service.unit}, легковой автомобиль R13–R15</p>
+              <p className="text-sm text-muted">{service.unit}, легковой автомобиль R13–R15</p>
               <p className="mt-4 flex items-center gap-2 text-sm">
-                <Clock className="size-4 opacity-70" aria-hidden="true" />
+                <Clock className="size-4 text-muted" aria-hidden="true" />
                 {service.duration}
               </p>
               <div className="mt-6 flex flex-col gap-2">
                 <ButtonLink href={calculatorHref} size="lg" className="w-full">
                   Рассчитать под мою машину
                 </ButtonLink>
-                <ButtonLink
-                  href="/#booking"
-                  size="lg"
-                  variant="outline"
-                  className="w-full border-emphasis-fg/25 text-emphasis-fg hover:border-emphasis-fg/50 hover:bg-emphasis-fg/8"
-                >
+                <ButtonLink href="/#booking" size="lg" variant="outline" className="w-full">
                   Записаться
                 </ButtonLink>
               </div>
-              <p className="mt-4 text-xs opacity-60">
+              <p className="mt-4 text-xs text-muted">
                 Цена ориентировочная, итог после осмотра автомобиля.
               </p>
             </div>

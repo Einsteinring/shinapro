@@ -58,13 +58,13 @@ export function Services() {
           <Reveal as="li" delay={360} className="lg:col-span-2">
             <Link
               href="/#calculator"
-              className="flex h-full min-h-56 flex-col justify-center rounded-3xl bg-emphasis p-6 text-emphasis-fg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-glow sm:flex-row sm:items-center sm:justify-between sm:gap-8"
+              className="flex h-full min-h-56 flex-col justify-center rounded-3xl border border-border bg-surface p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/60 hover:shadow-card sm:flex-row sm:items-center sm:justify-between sm:gap-8"
             >
               <div className="max-w-md">
                 <h3 className="text-2xl leading-tight font-bold">
                   Посчитайте точную стоимость под свою машину
                 </h3>
-                <p className="mt-2 text-sm opacity-70">
+                <p className="mt-2 text-sm text-muted">
                   Радиус, тип дисков, количество колёс и допуслуги. Тридцать секунд, без звонка.
                 </p>
               </div>

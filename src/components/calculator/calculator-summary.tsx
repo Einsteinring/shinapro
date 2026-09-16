@@ -16,6 +16,10 @@ interface CalculatorSummaryProps {
   copied: boolean;
 }
 
+/**
+ * Панель итога. Фон и рамка такие же, как у остальных блоков страницы:
+ * выделяют её размер суммы и оранжевая кнопка, а не инверсия цветов.
+ */
 export function CalculatorSummary({
   input,
   result,
@@ -28,10 +32,10 @@ export function CalculatorSummary({
 
   return (
     <aside
-      className="flex flex-col rounded-3xl bg-emphasis p-6 text-emphasis-fg shadow-card lg:sticky lg:top-24"
+      className="flex flex-col rounded-3xl border border-border bg-surface p-6 lg:sticky lg:top-24"
       aria-labelledby="summary-title"
     >
-      <p className="text-xs font-semibold tracking-wide text-emphasis-accent uppercase">
+      <p className="text-xs font-semibold tracking-wide text-accent-text uppercase">
         Итого ориентировочно
       </p>
       <p className="mt-2 flex items-baseline gap-2">
@@ -41,13 +45,13 @@ export function CalculatorSummary({
         />
         <span className="font-heading text-2xl font-bold">₽</span>
       </p>
-      <p className="mt-2 text-sm opacity-70" id="summary-title">
+      <p className="mt-2 text-sm text-muted" id="summary-title">
         {describeInput(input)}
       </p>
 
-      <div className="mt-5 overflow-hidden rounded-2xl bg-emphasis-fg/8">
+      <div className="mt-5 overflow-hidden rounded-2xl bg-surface-2">
         {empty ? (
-          <p className="p-4 text-sm opacity-70">
+          <p className="p-4 text-sm text-muted">
             Выберите хотя бы одну услугу, и здесь появится детализация.
           </p>
         ) : (
@@ -56,7 +60,7 @@ export function CalculatorSummary({
               Детализация расчёта: услуга, количество, цена, сумма
             </caption>
             <thead>
-              <tr className="text-left text-xs opacity-60">
+              <tr className="text-left text-xs text-muted">
                 <th scope="col" className="px-4 pt-3 pb-2 font-medium">
                   Услуга
                 </th>
@@ -74,14 +78,14 @@ export function CalculatorSummary({
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-emphasis-fg/15">
+            <tbody className="divide-y divide-border">
               {result.lines.map((line) => (
                 <tr key={line.id}>
                   <td className="px-4 py-2.5">{line.label}</td>
-                  <td className="tabular px-2 py-2.5 text-right whitespace-nowrap opacity-80">
-                    {line.qty} <span className="text-xs opacity-70">{line.unit}</span>
+                  <td className="tabular px-2 py-2.5 text-right whitespace-nowrap text-muted">
+                    {line.qty} <span className="text-xs">{line.unit}</span>
                   </td>
-                  <td className="tabular hidden px-2 py-2.5 text-right whitespace-nowrap opacity-80 sm:table-cell">
+                  <td className="tabular hidden px-2 py-2.5 text-right whitespace-nowrap text-muted sm:table-cell">
                     {formatPrice(line.unitPrice)}
                   </td>
                   <td className="tabular px-4 py-2.5 text-right font-semibold whitespace-nowrap">
@@ -90,7 +94,7 @@ export function CalculatorSummary({
                 </tr>
               ))}
               {result.discounts.map((d) => (
-                <tr key={d.id} className="text-emphasis-accent">
+                <tr key={d.id} className="text-accent-text">
                   <td className="px-4 py-2.5" colSpan={3}>
                     {d.label}
                   </td>
@@ -111,7 +115,7 @@ export function CalculatorSummary({
               )}
             </tbody>
             <tfoot>
-              <tr className="border-t border-emphasis-fg/25">
+              <tr className="border-t border-border">
                 <th scope="row" className="px-4 py-3 text-left font-semibold" colSpan={3}>
                   Итого
                 </th>
@@ -124,7 +128,7 @@ export function CalculatorSummary({
         )}
       </div>
 
-      <p className="mt-4 flex items-start gap-2 text-xs opacity-70">
+      <p className="mt-4 flex items-start gap-2 text-xs text-muted">
         <Info className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
         Цена ориентировочная, итоговая сумма после осмотра автомобиля. Все изменения согласуем до
         начала работ.
@@ -136,12 +140,7 @@ export function CalculatorSummary({
           Записаться с этим расчётом
         </Button>
         <div className="grid grid-cols-2 gap-2">
-          <Button
-            variant="outline"
-            onClick={onShare}
-            className="border-emphasis-fg/25 text-emphasis-fg hover:border-emphasis-fg/50 hover:bg-emphasis-fg/8"
-            aria-live="polite"
-          >
+          <Button variant="outline" onClick={onShare} aria-live="polite">
             {copied ? (
               <Check className="size-4" aria-hidden="true" />
             ) : (
@@ -149,11 +148,7 @@ export function CalculatorSummary({
             )}
             {copied ? "Скопировано" : "Поделиться"}
           </Button>
-          <Button
-            variant="outline"
-            onClick={onReset}
-            className="border-emphasis-fg/25 text-emphasis-fg hover:border-emphasis-fg/50 hover:bg-emphasis-fg/8"
-          >
+          <Button variant="outline" onClick={onReset}>
             <RotateCcw className="size-4" aria-hidden="true" />
             Сбросить
           </Button>

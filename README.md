@@ -152,7 +152,7 @@ src/
 Требуется Node.js 20.9+.
 
 ```bash
-git clone <repo> shinapro && cd shinapro
+git clone https://github.com/KnyazIV/shinapro.git && cd shinapro
 npm install
 npm run dev:setup
 ```

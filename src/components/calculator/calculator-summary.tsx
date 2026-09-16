@@ -28,10 +28,10 @@ export function CalculatorSummary({
 
   return (
     <aside
-      className="flex flex-col rounded-3xl bg-fg p-6 text-bg shadow-card lg:sticky lg:top-24"
+      className="flex flex-col rounded-3xl bg-emphasis p-6 text-emphasis-fg shadow-card lg:sticky lg:top-24"
       aria-labelledby="summary-title"
     >
-      <p className="text-xs font-semibold tracking-wide text-accent uppercase">
+      <p className="text-xs font-semibold tracking-wide text-emphasis-accent uppercase">
         Итого ориентировочно
       </p>
       <p className="mt-2 flex items-baseline gap-2">
@@ -45,7 +45,7 @@ export function CalculatorSummary({
         {describeInput(input)}
       </p>
 
-      <div className="mt-5 overflow-hidden rounded-2xl bg-white/5">
+      <div className="mt-5 overflow-hidden rounded-2xl bg-emphasis-fg/8">
         {empty ? (
           <p className="p-4 text-sm opacity-70">
             Выберите хотя бы одну услугу, и здесь появится детализация.
@@ -74,7 +74,7 @@ export function CalculatorSummary({
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/10">
+            <tbody className="divide-y divide-emphasis-fg/15">
               {result.lines.map((line) => (
                 <tr key={line.id}>
                   <td className="px-4 py-2.5">{line.label}</td>
@@ -90,7 +90,7 @@ export function CalculatorSummary({
                 </tr>
               ))}
               {result.discounts.map((d) => (
-                <tr key={d.id} className="text-accent">
+                <tr key={d.id} className="text-emphasis-accent">
                   <td className="px-4 py-2.5" colSpan={3}>
                     {d.label}
                   </td>
@@ -111,7 +111,7 @@ export function CalculatorSummary({
               )}
             </tbody>
             <tfoot>
-              <tr className="border-t border-white/20">
+              <tr className="border-t border-emphasis-fg/25">
                 <th scope="row" className="px-4 py-3 text-left font-semibold" colSpan={3}>
                   Итого
                 </th>
@@ -139,7 +139,7 @@ export function CalculatorSummary({
           <Button
             variant="outline"
             onClick={onShare}
-            className="border-white/20 text-bg hover:border-white/50 hover:bg-white/5"
+            className="border-emphasis-fg/25 text-emphasis-fg hover:border-emphasis-fg/50 hover:bg-emphasis-fg/8"
             aria-live="polite"
           >
             {copied ? (
@@ -152,7 +152,7 @@ export function CalculatorSummary({
           <Button
             variant="outline"
             onClick={onReset}
-            className="border-white/20 text-bg hover:border-white/50 hover:bg-white/5"
+            className="border-emphasis-fg/25 text-emphasis-fg hover:border-emphasis-fg/50 hover:bg-emphasis-fg/8"
           >
             <RotateCcw className="size-4" aria-hidden="true" />
             Сбросить

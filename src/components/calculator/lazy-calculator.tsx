@@ -30,7 +30,7 @@ export function CalculatorSkeleton() {
           />
         ))}
       </div>
-      <div className="h-[520px] animate-pulse-soft rounded-3xl bg-fg/90" />
+      <div className="h-[520px] animate-pulse-soft rounded-3xl bg-emphasis/90" />
     </div>
   );
 }

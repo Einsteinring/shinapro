@@ -130,8 +130,10 @@ export default async function ServicePage({ params }: PageProps) {
           </div>
 
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="rounded-3xl bg-fg p-6 text-bg shadow-card">
-              <p className="text-xs font-semibold tracking-wide text-accent uppercase">Стоимость</p>
+            <div className="rounded-3xl bg-emphasis p-6 text-emphasis-fg shadow-card">
+              <p className="text-xs font-semibold tracking-wide text-emphasis-accent uppercase">
+                Стоимость
+              </p>
               <p className="mt-2 flex items-baseline gap-2">
                 <span className="text-sm opacity-70">от</span>
                 <span className="font-heading text-4xl font-extrabold">
@@ -151,7 +153,7 @@ export default async function ServicePage({ params }: PageProps) {
                   href="/#booking"
                   size="lg"
                   variant="outline"
-                  className="w-full border-white/20 text-bg hover:border-white/50 hover:bg-white/5"
+                  className="w-full border-emphasis-fg/25 text-emphasis-fg hover:border-emphasis-fg/50 hover:bg-emphasis-fg/8"
                 >
                   Записаться
                 </ButtonLink>

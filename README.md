@@ -4,6 +4,8 @@
 > в Санкт-Петербурге. Next.js 16 (App Router), TypeScript strict, Tailwind CSS 4, Prisma + SQLite,
 > Telegram Bot API. Запускается локально одной командой, деплоится на Vercel.
 
+**Демо:** <https://shinapro.vercel.app> · админка: `/admin`
+
 <p align="center">
   <img src="docs/screenshots/home-dark.png" alt="Главный экран, тёмная тема" width="800">
 </p>

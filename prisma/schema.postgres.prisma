@@ -1,12 +1,12 @@
-// Локальная схема: SQLite, ноль настройки. Для продакшена есть schema.postgres.prisma
-// с той же моделью; нужную выбирает scripts/prisma.mjs по префиксу DATABASE_URL.
-// Правки модели вносите в оба файла.
+// Схема для продакшена (Vercel + Neon/Postgres). Модель идентична schema.prisma:
+// Prisma не умеет менять provider через env, поэтому файла два, а нужный выбирает
+// scripts/prisma.mjs по префиксу DATABASE_URL.
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -25,7 +25,7 @@ model Booking {
   calculation String?
   /// Итоговая сумма расчёта для быстрых выборок в админке.
   calcTotal   Int?
-  /// new | confirmed | done | cancelled (Prisma 6 не поддерживает enum для SQLite).
+  /// new | confirmed | done | cancelled
   status      String   @default("new")
   ip          String?
   createdAt   DateTime @default(now())

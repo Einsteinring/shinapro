@@ -190,15 +190,23 @@ npm run telegram:test
 
 ## Деплой на Vercel
 
-1. Импортируйте репозиторий в Vercel, фреймворк определится автоматически.
-2. Задайте переменные окружения из `.env.example`. `NEXT_PUBLIC_SITE_URL` — публичный адрес.
-3. **База данных.** Файловая SQLite не переживает деплой на serverless. Варианты:
-   - Vercel Postgres / Neon / Supabase: в `prisma/schema.prisma` поменяйте `provider = "postgresql"`,
-     укажите `DATABASE_URL`, выполните `npx prisma migrate deploy`.
-   - Turso (libSQL): совместим с SQLite-схемой, нужен адаптер `@prisma/adapter-libsql`.
-4. Rate limit хранится в памяти инстанса. Для serverless замените хранилище в
-   [`src/lib/rate-limit.ts`](src/lib/rate-limit.ts) на Upstash Redis, сигнатура функции не меняется.
-5. Build-команда по умолчанию (`npm run build`) уже включает `prisma generate`.
+Файловая SQLite не переживает деплой на serverless, поэтому в продакшене используется Postgres.
+В проекте две Prisma-схемы с одной моделью: `prisma/schema.prisma` (SQLite, локально) и
+`prisma/schema.postgres.prisma`; нужную выбирает `scripts/prisma.mjs` по префиксу `DATABASE_URL`.
+
+1. Создайте бесплатную базу на [neon.tech](https://neon.tech) и скопируйте строку подключения
+   `postgresql://…` (прямую, не pooled).
+2. Импортируйте репозиторий в Vercel, фреймворк определится автоматически.
+3. В настройках проекта добавьте переменные окружения:
+   - `DATABASE_URL` — строка из Neon;
+   - `NEXT_PUBLIC_SITE_URL` — публичный адрес, например `https://shinapro.vercel.app`;
+   - `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET` — свои значения;
+   - `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` — при необходимости. `TELEGRAM_PROXY` не нужен.
+4. Нажмите Deploy. Vercel сам выполнит `npm run vercel-build`: создаст таблицы в Neon
+   (`prisma db push`), сгенерирует клиент и соберёт сайт. Каждый пуш в `main` обновляет сайт.
+
+Rate limit хранится в памяти инстанса. Для serverless можно заменить хранилище в
+[`src/lib/rate-limit.ts`](src/lib/rate-limit.ts) на Upstash Redis, сигнатура функции не меняется.
 
 Для VPS/Docker всё проще: SQLite и in-memory rate limit работают как есть, достаточно
 `npm run build && npm start` за reverse proxy.

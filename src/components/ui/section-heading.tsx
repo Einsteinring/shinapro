@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface SectionHeadingProps {
-  eyebrow?: string;
   title: ReactNode;
   description?: ReactNode;
   align?: "left" | "center";
@@ -10,8 +9,11 @@ interface SectionHeadingProps {
   as?: "h1" | "h2";
 }
 
+/**
+ * Заголовок секции. Ярлыка-надписи над заголовком нет намеренно: он повторял бы
+ * сам заголовок. Всё, что нужно сказать дополнительно, живёт в description фактами.
+ */
 export function SectionHeading({
-  eyebrow,
   title,
   description,
   align = "left",
@@ -20,11 +22,6 @@ export function SectionHeading({
 }: SectionHeadingProps) {
   return (
     <div className={cn("max-w-2xl", align === "center" && "mx-auto text-center", className)}>
-      {eyebrow && (
-        <p className="mb-3 text-sm font-semibold tracking-wide text-accent-text uppercase">
-          {eyebrow}
-        </p>
-      )}
       <Tag className="text-3xl leading-[1.1] font-bold sm:text-4xl lg:text-[2.75rem]">{title}</Tag>
       {description && (
         <p className="mt-4 text-base leading-relaxed text-muted sm:text-lg">{description}</p>

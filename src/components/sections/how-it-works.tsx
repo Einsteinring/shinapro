@@ -1,6 +1,5 @@
 import { CalendarCheck, Calculator, CarFront, Smile } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 
 const steps = [
@@ -26,6 +25,10 @@ const steps = [
   },
 ];
 
+/**
+ * Это реальная последовательность, поэтому она нарисована как линия с засечками,
+ * а не как четыре одинаковые карточки: связь между шагами видна глазом.
+ */
 export function HowItWorks() {
   return (
     <section
@@ -34,32 +37,33 @@ export function HowItWorks() {
       aria-labelledby="how-title"
     >
       <Container>
-        <Reveal>
-          <SectionHeading
-            eyebrow="Как мы работаем"
-            title={<span id="how-title">Четыре шага от расчёта до готовых колёс</span>}
-            align="center"
-          />
-        </Reveal>
-        <ol className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <SectionHeading
+          title={<span id="how-title">Четыре шага от расчёта до готовых колёс</span>}
+          description="От расчёта до выезда из бокса проходит примерно час, и почти всё это время машина на посту, а не в очереди."
+        />
+
+        <ol className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
           {steps.map((step, i) => (
-            <Reveal as="li" key={step.title} delay={i * 90} className="relative">
-              <div className="h-full rounded-3xl border border-border bg-bg p-6">
-                <div className="flex items-center justify-between">
-                  <span className="flex size-11 items-center justify-center rounded-2xl bg-accent text-accent-fg">
-                    <step.icon className="size-5" aria-hidden="true" />
-                  </span>
-                  <span className="font-heading text-3xl font-bold text-muted" aria-hidden="true">
-                    0{i + 1}
-                  </span>
-                </div>
-                <h3 className="mt-5 text-lg font-bold">
-                  <span className="sr-only">Шаг {i + 1}: </span>
-                  {step.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{step.text}</p>
+            <li key={step.title} className="relative">
+              {/* Отрезок линии до следующего шага; у последнего его нет */}
+              {i < steps.length - 1 && (
+                <span
+                  className="absolute top-6 left-[5.5rem] hidden h-px w-[calc(100%-3.5rem)] bg-border lg:block"
+                  aria-hidden="true"
+                />
+              )}
+              <div className="flex items-center gap-3">
+                <span className="relative z-10 flex size-12 items-center justify-center rounded-full border border-border bg-surface font-heading text-lg font-bold">
+                  {i + 1}
+                </span>
+                <step.icon className="size-5 text-accent-text" aria-hidden="true" />
               </div>
-            </Reveal>
+              <h3 className="mt-5 text-lg font-bold">
+                <span className="sr-only">Шаг {i + 1}: </span>
+                {step.title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted">{step.text}</p>
+            </li>
           ))}
         </ol>
       </Container>

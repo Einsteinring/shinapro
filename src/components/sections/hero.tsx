@@ -1,4 +1,4 @@
-import { ArrowRight, Calculator, Clock, ShieldCheck, Wrench } from "lucide-react";
+import { Calculator, Clock, ShieldCheck, Wrench } from "lucide-react";
 import { siteConfig, trustBadges } from "@/config/site";
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -20,12 +20,12 @@ export function Hero() {
 
       <Container className="relative grid items-center gap-12 lg:grid-cols-[1.15fr_1fr]">
         <div className="max-w-2xl">
-          <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent-soft px-3.5 py-1.5 text-xs font-semibold tracking-wide text-accent-text uppercase">
+          <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent-soft px-3.5 py-1.5 text-sm font-semibold text-accent-text">
             <span
               className="size-1.5 animate-pulse-soft rounded-full bg-accent"
               aria-hidden="true"
             />
-            Санкт-Петербург · 2 филиала
+            Два филиала в Петербурге
           </p>
           <h1
             id="hero-title"
@@ -44,8 +44,7 @@ export function Hero() {
               Рассчитать стоимость
             </ButtonLink>
             <ButtonLink href="/#booking" size="lg" variant="outline">
-              Записаться
-              <ArrowRight className="size-5" aria-hidden="true" />
+              Записаться онлайн
             </ButtonLink>
           </div>
 

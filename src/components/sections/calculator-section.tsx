@@ -11,14 +11,12 @@ export function CalculatorSection() {
       aria-labelledby="calculator-title"
     >
       <Container>
-        <Reveal>
-          <SectionHeading
-            eyebrow="Калькулятор"
-            title={<span id="calculator-title">Сколько будет стоить</span>}
-            description="Сумма пересчитывается сразу. Параметры сохраняются в адресной строке: скопируйте ссылку и отправьте расчёт кому угодно."
-          />
-        </Reveal>
-        <Reveal delay={100} className="mt-10">
+        <SectionHeading
+          title={<span id="calculator-title">Сколько будет стоить</span>}
+          description="Сумма пересчитывается сразу. Параметры сохраняются в адресной строке: скопируйте ссылку и отправьте расчёт кому угодно."
+        />
+        {/* Вторая и последняя анимация появления на странице: здесь она отмечает главный блок */}
+        <Reveal className="mt-10">
           <LazyCalculator />
         </Reveal>
       </Container>

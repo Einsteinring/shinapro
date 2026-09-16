@@ -1,10 +1,9 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { reviews } from "@/config/reviews";
 import { Container } from "@/components/ui/container";
-import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { StarRating } from "@/components/ui/star-rating";
 import { formatDateRu } from "@/lib/dates";
@@ -12,7 +11,8 @@ import { cn } from "@/lib/utils";
 
 /**
  * Слайдер отзывов на CSS scroll-snap: работает без JS (обычный горизонтальный скролл),
- * JS добавляет кнопки, точки и клавиатурную навигацию.
+ * JS добавляет кнопки и точки. Отзывы намеренно без рамок: текст крупнее, чем в карточках,
+ * разделяют их линейки, а не коробки.
  */
 export function Reviews() {
   const trackRef = useRef<HTMLUListElement>(null);
@@ -57,9 +57,8 @@ export function Reviews() {
       aria-labelledby="reviews-title"
     >
       <Container>
-        <Reveal className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <SectionHeading
-            eyebrow="Отзывы"
             title={<span id="reviews-title">Что говорят клиенты</span>}
             description={
               <>
@@ -88,13 +87,13 @@ export function Reviews() {
               <ChevronRight className="size-5" aria-hidden="true" />
             </button>
           </div>
-        </Reveal>
+        </div>
 
         <div
           role="region"
           aria-roledescription="карусель"
           aria-label="Отзывы клиентов"
-          className="mt-10"
+          className="mt-12"
         >
           <ul
             ref={trackRef}
@@ -104,14 +103,11 @@ export function Reviews() {
               <li
                 key={review.id}
                 aria-label={`Отзыв ${i + 1} из ${reviews.length}`}
-                className="flex w-[85%] shrink-0 snap-start flex-col rounded-3xl border border-border bg-bg p-6 sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.7rem)]"
+                className="flex w-[85%] shrink-0 snap-start flex-col border-t border-border pt-5 sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.7rem)]"
               >
-                <div className="flex items-center justify-between">
-                  <StarRating value={review.rating} />
-                  <Quote className="size-6 text-accent" aria-hidden="true" />
-                </div>
-                <p className="mt-4 flex-1 leading-relaxed">{review.text}</p>
-                <footer className="mt-5 flex items-center justify-between gap-3 border-t border-border pt-4 text-sm">
+                <StarRating value={review.rating} />
+                <p className="mt-4 flex-1 text-[17px] leading-relaxed">{review.text}</p>
+                <footer className="mt-6 flex items-baseline justify-between gap-3 text-sm">
                   <div>
                     <p className="font-semibold">{review.author}</p>
                     <p className="text-xs text-muted">{review.car}</p>
@@ -127,7 +123,7 @@ export function Reviews() {
             ))}
           </ul>
 
-          <div className="mt-4 flex justify-center gap-2" aria-hidden="true">
+          <div className="mt-6 flex justify-center gap-2" aria-hidden="true">
             {reviews.map((r, i) => (
               <button
                 key={r.id}

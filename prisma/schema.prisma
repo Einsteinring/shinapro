@@ -1,0 +1,35 @@
+// SQLite выбран как zero-config БД для локального запуска и портфолио.
+// Для продакшена достаточно сменить provider на postgresql и DATABASE_URL.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// Заявка на запись. Дата и время храним строками (YYYY-MM-DD, HH:mm),
+/// чтобы не зависеть от часового пояса сервера: слоты привязаны к локальному времени филиала.
+model Booking {
+  id          Int      @id @default(autoincrement())
+  name        String
+  phone       String
+  car         String?
+  branchId    String
+  date        String
+  time        String
+  comment     String?
+  /// Снимок расчёта из калькулятора (JSON-строка), если клиент пришёл из калькулятора.
+  calculation String?
+  /// Итоговая сумма расчёта для быстрых выборок в админке.
+  calcTotal   Int?
+  /// new | confirmed | done | cancelled (Prisma 6 не поддерживает enum для SQLite).
+  status      String   @default("new")
+  ip          String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([branchId, date, status])
+  @@index([status, createdAt])
+}

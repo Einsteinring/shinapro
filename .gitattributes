@@ -1,0 +1,9 @@
+# Все текстовые файлы храним и выгружаем с LF, независимо от ОС разработчика
+* text=auto eol=lf
+
+# Бинарные файлы не трогаем
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff2 binary
+*.db binary

@@ -1,0 +1,212 @@
+@import "tailwindcss";
+
+/* Тёмная тема через класс на <html> (next-themes), а не через media query */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "RubleLocal", var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-heading:
+    "RubleLocal", var(--font-unbounded), var(--font-manrope), ui-sans-serif, sans-serif;
+
+  /* Акцент: насыщенный оранжевый. Текст на нём всегда тёмный */
+  --color-accent: #ff6a00;
+  --color-accent-hover: #f05f00;
+  --color-accent-soft: color-mix(in oklab, #ff6a00 14%, transparent);
+  --color-accent-fg: #17120d;
+
+  /* Семантические цвета, меняются темой через CSS-переменные ниже */
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-accent-text: var(--accent-text);
+  --color-success: #1f9d55;
+  --color-danger: #d93025;
+
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.75rem;
+
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px -12px rgb(0 0 0 / 0.18);
+  --shadow-glow: 0 0 0 1px color-mix(in oklab, #ff6a00 35%, transparent), 0 12px 40px -16px #ff6a00;
+
+  --animate-marquee: marquee 30s linear infinite;
+  --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes pulse-soft {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.55;
+    }
+  }
+}
+
+/*
+ * Знак рубля (U+20BD) лежит в latin-ext-подмножестве Google Fonts. Без этого правила
+ * один символ «₽» заставлял бы браузер скачать +130 КБ шрифтов. Берём его из системного
+ * шрифта, который есть на любом устройстве, а Unbounded/Manrope остаются в latin+cyrillic.
+ */
+@font-face {
+  font-family: "RubleLocal";
+  src:
+    local("Segoe UI"), local("SF Pro Text"), local("Roboto"), local("Helvetica Neue"),
+    local("Arial");
+  unicode-range: U+20BD;
+}
+
+:root {
+  --bg: #f6f6f3;
+  --fg: #15171c;
+  --muted: #5b6170;
+  --surface: #ffffff;
+  --surface-2: #ecede9;
+  --border: #dcded8;
+  --accent-text: #c24f00;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #0e1013;
+  --fg: #f1f2f4;
+  --muted: #9ba2ae;
+  --surface: #161920;
+  --surface-2: #1d2129;
+  --border: #2a2f39;
+  --accent-text: #ff8a3d;
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Чтобы якоря не прятались под липкой шапкой */
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Акцидентный Unbounded только для крупных заголовков, мелкие — Manrope, чтобы не грузить лишние веса */
+  h1,
+  h2 {
+    @apply font-heading tracking-tight text-balance;
+  }
+
+  h3,
+  h4 {
+    @apply font-sans font-bold tracking-tight text-balance;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-accent-fg);
+  }
+
+  /* Единый видимый фокус для клавиатуры */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 0.375rem;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Появление блоков при скролле: класс is-visible ставит <Reveal /> через IntersectionObserver */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Плавный аккордеон без измерения высоты: grid 0fr → 1fr */
+  .accordion-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .accordion-panel[data-open="true"] {
+    grid-template-rows: 1fr;
+  }
+  .accordion-panel > div {
+    overflow: hidden;
+  }
+
+  /* Декоративная сетка на фоне hero */
+  .bg-grid {
+    background-image:
+      linear-gradient(
+        to right,
+        color-mix(in oklab, var(--fg) 6%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in oklab, var(--fg) 6%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 20%, black 30%, transparent 100%);
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Числа с одинаковой шириной, чтобы анимированная сумма не «прыгала» */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}

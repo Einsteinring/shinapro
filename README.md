@@ -176,8 +176,17 @@ Prisma Client, создаёт SQLite-базу, заливает тестовые
 
 ### Переменные окружения
 
-См. [`.env.example`](.env.example). Для Telegram: создайте бота через @BotFather, напишите ему,
-узнайте `chat_id` (например, через @userinfobot) и заполните `TELEGRAM_BOT_TOKEN` и `TELEGRAM_CHAT_ID`.
+См. [`.env.example`](.env.example). Для Telegram: создайте бота через @BotFather, нажмите у него
+«Start», узнайте свой `chat_id` (например, через @userinfobot) и заполните `TELEGRAM_BOT_TOKEN`
+и `TELEGRAM_CHAT_ID`. Проверить связку одной командой:
+
+```bash
+npm run telegram:test
+```
+
+Если `api.telegram.org` у вас доступен только через VPN или локальный прокси, укажите его адрес
+в `TELEGRAM_PROXY` (например, `http://127.0.0.1:10809`): приложение и тест пойдут через него.
+На сервере переменную оставляют пустой.
 
 ## Деплой на Vercel
 

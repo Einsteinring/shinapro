@@ -18,6 +18,7 @@
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio",
+    "telegram:test": "node scripts/telegram-test.mjs",
     "setup": "node scripts/setup-env.mjs && prisma generate && prisma db push && prisma db seed",
     "dev:setup": "npm run setup && next dev",
     "postinstall": "prisma generate"
@@ -36,6 +37,7 @@
     "react-dom": "19.2.8",
     "react-hook-form": "^7.88.0",
     "tailwind-merge": "^3.7.0",
+    "undici": "^8.10.2",
     "zod": "^4.6.5"
   },
   "devDependencies": {

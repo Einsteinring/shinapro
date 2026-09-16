@@ -4,13 +4,52 @@
  * Любая ошибка логируется и не пробрасывается: заявка уже сохранена в БД.
  */
 import type { Booking } from "@prisma/client";
+import type { Dispatcher } from "undici";
 import { getBranch, siteConfig } from "@/config/site";
 import type { CalculationSnapshot } from "@/lib/calculator";
 import { formatDateRu } from "@/lib/dates";
 import { formatBookingNumber, formatPrice } from "@/lib/format";
 import { formatPhoneDisplay } from "@/lib/phone";
 
-const TELEGRAM_TIMEOUT_MS = 8000;
+const TELEGRAM_TIMEOUT_MS = 15000;
+
+/**
+ * Прокси для Bot API. Нужен там, где api.telegram.org недоступен напрямую:
+ * TELEGRAM_PROXY в .env, иначе стандартные HTTPS_PROXY / HTTP_PROXY. На Vercel не задаётся.
+ */
+function getProxyUrl(): string | undefined {
+  return (
+    process.env.TELEGRAM_PROXY ||
+    process.env.HTTPS_PROXY ||
+    process.env.https_proxy ||
+    process.env.HTTP_PROXY ||
+    process.env.http_proxy ||
+    undefined
+  );
+}
+
+interface TelegramRequestInit {
+  method: "POST";
+  headers: Record<string, string>;
+  body: string;
+  signal: AbortSignal;
+}
+
+let proxyAgent: Dispatcher | undefined;
+
+/**
+ * Без прокси используем глобальный fetch. С прокси берём fetch и ProxyAgent из одного
+ * пакета undici: смешивать dispatcher одной версии с fetch другой нельзя (UND_ERR_INVALID_ARG).
+ */
+async function telegramFetch(url: string, init: TelegramRequestInit): Promise<Response> {
+  const proxy = getProxyUrl();
+  if (!proxy) return fetch(url, init);
+  const undici = await import("undici");
+  proxyAgent ??= new undici.ProxyAgent(proxy);
+  const res = await undici.fetch(url, { ...init, dispatcher: proxyAgent });
+  // Response undici и глобальный Response структурно совместимы в нужной нам части
+  return res as unknown as Response;
+}
 
 export function escapeHtml(text: string): string {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -34,7 +73,7 @@ export async function sendTelegramMessage(html: string): Promise<boolean> {
   const timer = setTimeout(() => controller.abort(), TELEGRAM_TIMEOUT_MS);
 
   try {
-    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    const res = await telegramFetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

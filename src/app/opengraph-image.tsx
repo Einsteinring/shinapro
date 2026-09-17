@@ -22,18 +22,55 @@ export default function OpenGraphImage() {
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+        {/* Тот же знак, что в шапке сайта: покрышка с протектором */}
         <div
           style={{
+            position: "relative",
             width: 56,
             height: 56,
-            borderRadius: 999,
-            background: "#f1f2f4",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <div style={{ width: 22, height: 22, borderRadius: 999, background: "#ff6a00" }} />
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: 56,
+              height: 56,
+              borderRadius: 999,
+              border: "14px solid #f1f2f4",
+            }}
+          />
+          {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => (
+            <div
+              key={deg}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: 56,
+                height: 56,
+                display: "flex",
+                justifyContent: "center",
+                transform: `rotate(${deg}deg)`,
+              }}
+            >
+              <div
+                style={{
+                  width: 6,
+                  height: 11,
+                  marginTop: 2,
+                  borderRadius: 3,
+                  transform: "rotate(14deg)",
+                  background: "#ff6a00",
+                }}
+              />
+            </div>
+          ))}
+          <div style={{ width: 23, height: 23, borderRadius: 999, background: "#f1f2f4" }} />
         </div>
         <div style={{ display: "flex", fontSize: 40, fontWeight: 700 }}>
           <span>Шина</span>

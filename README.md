@@ -1,4 +1,4 @@
-# ШинаПро — сайт шиномонтажа с калькулятором, онлайн-записью и админкой
+# ШинаПро — сайт шиномонтажа и Telegram Mini App
 
 > Учебный production-ready проект для портфолио: сайт вымышленного шиномонтажа
 > в Санкт-Петербурге и Telegram Mini App к нему. Next.js 16 (App Router), TypeScript strict,
@@ -53,7 +53,8 @@
 | **Tailwind CSS 4**            | Дизайн-токены в CSS (`@theme`), тёмная тема через класс, никакого runtime-CSS                               |
 | **React Hook Form + Zod 4**   | Одна Zod-схема валидирует форму на клиенте и тело запроса на сервере: правила не расходятся                 |
 | **Prisma 6 + SQLite**         | Ноль настройки для локального запуска; смена на Postgres — одна строка в `schema.prisma`                    |
-| **Telegram Bot API**          | Бесплатные пуш-уведомления сотрудникам без сторонних сервисов, через обычный `fetch`                        |
+| **Telegram Mini Apps SDK**    | Запись внутри мессенджера: тема, MainButton и BackButton клиента, подпись initData проверяется на сервере   |
+| **Telegram Bot API**          | Бот открывает приложение по `/start`; вебхук на том же Next.js, без отдельного сервиса                      |
 | **Vitest**                    | Быстрые unit-тесты чистых функций: калькулятор, слоты, маска телефона, rate limit                           |
 | **next/font + Google Fonts**  | Unbounded (заголовки) и Manrope (текст) с кириллицей, self-hosted, без запросов к Google в рантайме         |
 | **lucide-react, next-themes** | Лёгкие иконки с tree-shaking и переключение темы без FOUC                                                   |

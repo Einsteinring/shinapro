@@ -18,7 +18,13 @@ const env = Object.fromEntries(
     .filter((line) => line && !line.startsWith("#") && line.includes("="))
     .map((line) => {
       const [key, ...rest] = line.split("=");
-      return [key.trim(), rest.join("=").trim().replace(/^"(.*)"$/, "$1")];
+      return [
+        key.trim(),
+        rest
+          .join("=")
+          .trim()
+          .replace(/^"(.*)"$/, "$1"),
+      ];
     }),
 );
 
@@ -29,7 +35,10 @@ if (!token) {
 }
 
 const proxy =
-  env.TELEGRAM_PROXY || process.env.TELEGRAM_PROXY || process.env.HTTPS_PROXY || process.env.HTTP_PROXY;
+  env.TELEGRAM_PROXY ||
+  process.env.TELEGRAM_PROXY ||
+  process.env.HTTPS_PROXY ||
+  process.env.HTTP_PROXY;
 const dispatcher = proxy ? new ProxyAgent(proxy) : undefined;
 
 async function call(method, payload) {
@@ -74,7 +83,17 @@ if (!base) {
   process.exit(1);
 }
 if (!base.startsWith("https://")) {
-  console.error(`Telegram принимает webhook только по https, получено: ${base}`);
+  // Обычная ловушка: в локальном .env лежит адрес для разработки, а вебхук нужен боевой
+  console.error(`Telegram принимает webhook только по https, а получено: ${base}`);
+  if (/^https?:\/\/(localhost|127\.0\.0\.1)/.test(base)) {
+    console.error(
+      [
+        "",
+        "Это адрес из локального .env — он для разработки. Передайте боевой явно:",
+        "  node scripts/set-webhook.mjs --url https://ваш-домен",
+      ].join("\n"),
+    );
+  }
   process.exit(1);
 }
 

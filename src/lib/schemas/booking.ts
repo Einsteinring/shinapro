@@ -38,6 +38,7 @@ export const calculatorInputSchema = z.object({
   wheels: z.literal([...WHEEL_COUNTS]),
   services: z.object(servicesShape),
   punctures: z.number().int().min(0).max(20),
+  discs: z.number().int().min(0).max(8).default(0),
   storageMonths: z.number().int().min(0).max(24),
   homeVisit: z.boolean(),
   urgent: z.boolean(),

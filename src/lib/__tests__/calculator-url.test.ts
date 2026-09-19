@@ -29,6 +29,7 @@ describe("calculator-url", () => {
       radius: 20,
       wheelType: "lowprofile",
       wheels: 2,
+      discs: 0,
       services: {
         removeInstall: false,
         mountDemount: true,

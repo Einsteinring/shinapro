@@ -14,6 +14,7 @@ import {
   type PerWheelService,
   type PricingConfig,
   type Radius,
+  type RadiusPricedWork,
   type VehicleType,
   type WheelCount,
   type WheelType,
@@ -27,6 +28,8 @@ export interface CalculatorInput {
   services: Record<PerWheelService, boolean>;
   /** Количество проколов, 0 — услуга не нужна */
   punctures: number;
+  /** Количество дисков на правку, 0 — услуга не нужна */
+  discs: number;
   /** Срок хранения в месяцах, 0 — хранение не нужно */
   storageMonths: number;
   homeVisit: boolean;
@@ -74,6 +77,7 @@ export const DEFAULT_CALCULATOR_INPUT: CalculatorInput = {
     bags: false,
   },
   punctures: 0,
+  discs: 0,
   storageMonths: 0,
   homeVisit: false,
   urgent: false,
@@ -129,6 +133,7 @@ export function normalizeInput(
     wheels: pickEnum(wheelsNum, WHEEL_COUNTS, DEFAULT_CALCULATOR_INPUT.wheels),
     services,
     punctures: clampInt(p.punctures, 0, config.puncture.max, 0),
+    discs: clampInt(p.discs, 0, config.discRepair.max, 0),
     storageMonths: clampInt(p.storageMonths, 0, config.storage.maxMonths, 0),
     homeVisit: p.homeVisit === true,
     urgent: p.urgent === true,
@@ -137,7 +142,7 @@ export function normalizeInput(
 
 /** Цена за одно колесо для работ, зависящих от радиуса, с учётом коэффициентов авто и дисков */
 export function getUnitPrice(
-  work: "removeInstall" | "mountDemount" | "balancing" | "punctureRepair",
+  work: RadiusPricedWork,
   input: Pick<CalculatorInput, "vehicle" | "radius" | "wheelType">,
   config: PricingConfig = defaultPricing,
 ): number {
@@ -188,6 +193,17 @@ export function calculatePrice(
       input.punctures,
       "прокол",
       getUnitPrice("punctureRepair", input, config),
+    );
+  }
+
+  // Правка дисков: считается за диск и не привязана к количеству колёс
+  if (input.discs > 0) {
+    addLine(
+      "discRepair",
+      config.discRepair.label,
+      input.discs,
+      "диск",
+      getUnitPrice("discRepair", input, config),
     );
   }
 

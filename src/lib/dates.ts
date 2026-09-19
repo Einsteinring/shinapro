@@ -30,6 +30,14 @@ export function addDays(iso: string, days: number): string {
   return toISODate(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate());
 }
 
+/** Прибавляет месяцы, прижимая к концу месяца: 31 января + 1 месяц = 28 февраля */
+export function addMonths(iso: string, months: number): string {
+  const [y, m, d] = iso.split("-").map(Number) as [number, number, number];
+  const lastDay = new Date(Date.UTC(y, m - 1 + months + 1, 0)).getUTCDate();
+  const date = new Date(Date.UTC(y, m - 1 + months, Math.min(d, lastDay)));
+  return toISODate(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate());
+}
+
 export function compareISODates(a: string, b: string): number {
   return a < b ? -1 : a > b ? 1 : 0;
 }

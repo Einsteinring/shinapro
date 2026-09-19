@@ -19,12 +19,22 @@ model Booking {
   car         String?
   branchId    String
   date        String
-  time        String
+  /// HH:mm. null — визит без получасового слота: так приезжают сдавать шины на хранение.
+  /// Частичный уникальный индекс (prisma/constraints.sql) считает NULL-значения разными,
+  /// поэтому несколько сдач в один день не мешают друг другу.
+  time        String?
   comment     String?
   /// Снимок расчёта из калькулятора (JSON-строка), если клиент пришёл из калькулятора.
   calculation String?
   /// Итоговая сумма расчёта для быстрых выборок в админке.
   calcTotal   Int?
+  /// site | miniapp — откуда пришла заявка.
+  source      String   @default("site")
+  /// Id услуги из Mini App: у заявок с сайта пусто, там состав работ виден в расчёте.
+  service     String?
+  /// Telegram id клиента из проверенного initData. Только по нему человек видит
+  /// и отменяет свои записи; в теле запросов этот id не принимается.
+  telegramId  String?
   /// new | confirmed | done | cancelled
   status      String   @default("new")
   ip          String?
@@ -33,4 +43,5 @@ model Booking {
 
   @@index([branchId, date, status])
   @@index([status, createdAt])
+  @@index([telegramId, date])
 }

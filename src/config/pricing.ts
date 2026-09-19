@@ -37,20 +37,29 @@ export const RADIUS_BANDS = [
 export type RadiusBandId = (typeof RADIUS_BANDS)[number]["id"];
 
 /** Работы, цена которых зависит от радиуса */
-export type RadiusPricedWork = "removeInstall" | "mountDemount" | "balancing" | "punctureRepair";
+export type RadiusPricedWork =
+  "removeInstall" | "mountDemount" | "balancing" | "punctureRepair" | "discRepair";
 
 export interface PricingConfig {
   currency: string;
   /** Округление строк расчёта до N рублей */
   roundTo: number;
-  vehicle: Record<VehicleType, { label: string; hint: string; multiplier: number }>;
-  wheelType: Record<WheelType, { label: string; hint: string; multiplier: number }>;
+  /** shortLabel — для узких переключателей Mini App, где полное название не помещается */
+  vehicle: Record<
+    VehicleType,
+    { label: string; shortLabel: string; hint: string; multiplier: number }
+  >;
+  wheelType: Record<
+    WheelType,
+    { label: string; shortLabel: string; hint: string; multiplier: number }
+  >;
   /** Цена за одно колесо по диапазону радиуса */
   perWheelByBand: Record<RadiusBandId, Record<RadiusPricedWork, number>>;
   /** Услуги с фиксированной ценой за колесо, не зависящей от радиуса и типа авто */
   perWheelFlat: Record<"wash" | "bags", number>;
   services: Record<PerWheelService, { label: string; hint: string }>;
   puncture: { label: string; hint: string; max: number };
+  discRepair: { label: string; hint: string; max: number };
   storage: {
     label: string;
     hint: string;
@@ -74,27 +83,72 @@ export const pricing: PricingConfig = {
   roundTo: 10,
 
   vehicle: {
-    sedan: { label: "Легковой", hint: "седан, хэтчбек, универсал", multiplier: 1 },
-    suv: { label: "Кроссовер / SUV", hint: "паркетники и внедорожники", multiplier: 1.2 },
-    minivan: { label: "Минивэн", hint: "7–8 мест", multiplier: 1.3 },
-    lcv: { label: "Лёгкий коммерческий", hint: "Ларгус, Газель, Transit", multiplier: 1.4 },
+    sedan: {
+      label: "Легковой",
+      shortLabel: "Легковой",
+      hint: "седан, хэтчбек, универсал",
+      multiplier: 1,
+    },
+    suv: {
+      label: "Кроссовер / SUV",
+      shortLabel: "Кроссовер",
+      hint: "паркетники и внедорожники",
+      multiplier: 1.2,
+    },
+    minivan: { label: "Минивэн", shortLabel: "Минивэн", hint: "7–8 мест", multiplier: 1.3 },
+    lcv: {
+      label: "Лёгкий коммерческий",
+      shortLabel: "Коммерческий",
+      hint: "Ларгус, Газель, Transit",
+      multiplier: 1.4,
+    },
   },
 
   wheelType: {
-    steel: { label: "Штампованные", hint: "стальные диски", multiplier: 1 },
-    alloy: { label: "Литые", hint: "легкосплавные", multiplier: 1.1 },
+    steel: {
+      label: "Штампованные",
+      shortLabel: "Штампы",
+      hint: "стальные диски",
+      multiplier: 1,
+    },
+    alloy: { label: "Литые", shortLabel: "Литые", hint: "легкосплавные", multiplier: 1.1 },
     lowprofile: {
       label: "Низкий профиль / Run-Flat",
+      shortLabel: "Run-Flat",
       hint: "жёсткая боковина, наценка 30%",
       multiplier: 1.3,
     },
   },
 
   perWheelByBand: {
-    "r13-15": { removeInstall: 150, mountDemount: 200, balancing: 200, punctureRepair: 500 },
-    "r16-17": { removeInstall: 180, mountDemount: 250, balancing: 250, punctureRepair: 600 },
-    "r18-19": { removeInstall: 220, mountDemount: 320, balancing: 320, punctureRepair: 750 },
-    "r20-22": { removeInstall: 280, mountDemount: 420, balancing: 420, punctureRepair: 900 },
+    "r13-15": {
+      removeInstall: 150,
+      mountDemount: 200,
+      balancing: 200,
+      punctureRepair: 500,
+      discRepair: 900,
+    },
+    "r16-17": {
+      removeInstall: 180,
+      mountDemount: 250,
+      balancing: 250,
+      punctureRepair: 600,
+      discRepair: 1100,
+    },
+    "r18-19": {
+      removeInstall: 220,
+      mountDemount: 320,
+      balancing: 320,
+      punctureRepair: 750,
+      discRepair: 1400,
+    },
+    "r20-22": {
+      removeInstall: 280,
+      mountDemount: 420,
+      balancing: 420,
+      punctureRepair: 900,
+      discRepair: 1800,
+    },
   },
 
   perWheelFlat: {
@@ -114,6 +168,12 @@ export const pricing: PricingConfig = {
     label: "Ремонт прокола",
     hint: "жгут или грибок, зависит от повреждения",
     max: 8,
+  },
+
+  discRepair: {
+    label: "Правка диска",
+    hint: "холодная прокатка на стенде, без нагрева",
+    max: 4,
   },
 
   storage: {

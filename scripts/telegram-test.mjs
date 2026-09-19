@@ -1,6 +1,9 @@
 /**
- * Проверка связки с Telegram: читает TELEGRAM_BOT_TOKEN и TELEGRAM_CHAT_ID из .env,
- * запрашивает имя бота и отправляет тестовое сообщение в чат.
+ * Проверка бота: читает TELEGRAM_BOT_TOKEN из .env и спрашивает у Telegram его имя.
+ * Этим же токеном проверяется подпись initData, поэтому если тут порядок —
+ * Mini App пустит клиентов.
+ *
+ * Если дополнительно задан TELEGRAM_CHAT_ID, шлёт в этот чат тестовое сообщение.
  * Если задан TELEGRAM_PROXY (или HTTPS_PROXY), запросы идут через прокси,
  * как и в самом приложении. Запуск: npm run telegram:test
  */
@@ -31,8 +34,8 @@ const proxy =
   process.env.HTTPS_PROXY ||
   process.env.HTTP_PROXY;
 
-if (!token || !chatId) {
-  console.error("В .env не заполнены TELEGRAM_BOT_TOKEN и/или TELEGRAM_CHAT_ID");
+if (!token) {
+  console.error("В .env не заполнен TELEGRAM_BOT_TOKEN");
   process.exit(1);
 }
 
@@ -70,6 +73,12 @@ if (!me.ok) {
   process.exit(1);
 }
 console.log("Бот найден: @" + me.result.username);
+console.log("Этим токеном проверяется подпись initData у Mini App");
+
+if (!chatId) {
+  console.log("TELEGRAM_CHAT_ID не задан — тестовое сообщение не отправляем, это нормально");
+  process.exit(0);
+}
 
 const sent = await api("sendMessage", {
   chat_id: chatId,

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "node scripts/prisma.mjs generate && next build",
-    "vercel-build": "node scripts/prisma.mjs db push --accept-data-loss && node scripts/prisma.mjs generate && next build",
+    "vercel-build": "node scripts/prisma.mjs db push --accept-data-loss && node scripts/db-constraints.mjs && node scripts/prisma.mjs generate && next build",
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -16,11 +16,12 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "db:generate": "node scripts/prisma.mjs generate",
-    "db:push": "node scripts/prisma.mjs db push",
+    "db:push": "node scripts/prisma.mjs db push && node scripts/db-constraints.mjs",
     "db:seed": "node scripts/prisma.mjs db seed",
     "db:studio": "prisma studio",
     "telegram:test": "node scripts/telegram-test.mjs",
-    "setup": "node scripts/setup-env.mjs && node scripts/prisma.mjs generate && node scripts/prisma.mjs db push && node scripts/prisma.mjs db seed",
+    "telegram:webhook": "node scripts/set-webhook.mjs",
+    "setup": "node scripts/setup-env.mjs && node scripts/prisma.mjs generate && node scripts/prisma.mjs db push && node scripts/db-constraints.mjs && node scripts/prisma.mjs db seed",
     "dev:setup": "npm run setup && next dev",
     "postinstall": "node scripts/prisma.mjs generate"
   },

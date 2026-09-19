@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>ШинаПро — запись на шиномонтаж</title>
+    <meta
+      name="description"
+      content="Запись на шиномонтаж ШинаПро: услуга, параметры колёс, филиал и свободное время за четыре шага."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/app/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/app/styles.css" />
+    <!-- Единственная внешняя зависимость приложения -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  </head>
+  <body>
+    <div class="app">
+      <div class="app__scroll" id="scroll">
+        <main id="screen"></main>
+        <!-- Держит место до загрузки прайса, чтобы первый кадр не был пустым экраном -->
+        <div id="boot" aria-hidden="true">
+          <span class="skeleton"></span>
+          <span class="skeleton"></span>
+          <span class="skeleton"></span>
+        </div>
+      </div>
+      <div class="app__dock" id="dock"></div>
+    </div>
+    <script type="module" src="/app/js/app.js"></script>
+  </body>
+</html>

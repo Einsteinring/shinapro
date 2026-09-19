@@ -192,12 +192,18 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                   const snapshot = parseSnapshot(b.calculation);
                   return (
                     <tr key={b.id} className="align-top">
-                      <td className="tabular px-4 py-3 font-semibold whitespace-nowrap">
-                        {formatBookingNumber(b.id)}
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <div className="tabular font-semibold">{formatBookingNumber(b.id)}</div>
+                        {b.source === "miniapp" && (
+                          <span className="mt-1 inline-block rounded-md bg-accent-soft px-1.5 py-0.5 text-[11px] leading-tight font-semibold text-accent-text">
+                            Telegram
+                          </span>
+                        )}
                       </td>
                       <td className="tabular px-4 py-3 whitespace-nowrap">
                         <div className="font-semibold">{formatDateShort(b.date)}</div>
-                        <div className="text-muted">{b.time}</div>
+                        {/* Без времени приезжают сдавать шины на хранение: слот для этого не нужен */}
+                        <div className="text-muted">{b.time ?? "в течение дня"}</div>
                       </td>
                       <td className="px-4 py-3">
                         {getBranch(b.branchId)?.shortName ?? b.branchId}

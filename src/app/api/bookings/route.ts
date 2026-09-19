@@ -3,12 +3,12 @@ import { createBooking, SlotUnavailableError } from "@/lib/bookings";
 import { formatBookingNumber } from "@/lib/format";
 import { getBookingRateLimitOptions, getClientIp, rateLimit } from "@/lib/rate-limit";
 import { bookingSchema } from "@/lib/schemas/booking";
-import { notifyNewBooking } from "@/lib/telegram";
 
 /**
  * POST /api/bookings — создание заявки.
  * Порядок: honeypot → rate limit → валидация той же Zod-схемой, что и на клиенте →
- * транзакция с проверкой слота → Telegram (ошибка не ломает ответ).
+ * транзакция с проверкой слота. Уведомлений в Telegram нет: заявки и с сайта,
+ * и из Mini App живут в одной таблице и разбираются в админке.
  */
 export async function POST(request: Request) {
   let body: unknown;
@@ -55,9 +55,6 @@ export async function POST(request: Request) {
 
   try {
     const booking = await createBooking(parsed.data, { ip });
-
-    // Telegram не должен влиять на результат: заявка уже в БД
-    notifyNewBooking(booking).catch((error) => console.error("[api/bookings] telegram", error));
 
     return NextResponse.json(
       {

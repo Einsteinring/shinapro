@@ -44,6 +44,15 @@
 | ------------------------------------------------ | -------------------------------------- |
 | ![Мобильная версия](docs/screenshots/mobile.png) | ![Админка](docs/screenshots/admin.png) |
 
+Telegram Mini App — то же предприятие внутри мессенджера: слева сумма пересчитывается,
+пока крутишь радиус, справа общие с сайтом свободные слоты и выбор филиала.
+
+<p align="center">
+  <img src="docs/screenshots/miniapp-price-dark.png" alt="Mini App: параметры колёс и чек с итогом, тёмная тема" width="280">
+  &nbsp;&nbsp;
+  <img src="docs/screenshots/miniapp-slots-light.png" alt="Mini App: выбор филиала, даты и свободного времени, светлая тема" width="280">
+</p>
+
 ## Стек и почему он
 
 | Технология                    | Зачем                                                                                                       |

@@ -2,7 +2,8 @@
 
 > Учебный production-ready проект для портфолио: сайт вымышленного шиномонтажа
 > в Санкт-Петербурге и Telegram Mini App к нему. Next.js 16 (App Router), TypeScript strict,
-> Tailwind CSS 4, Prisma + SQLite, Telegram Mini Apps SDK. Запускается локально одной командой,
+> Tailwind CSS 4, Prisma (SQLite локально, Postgres в Neon на проде), Telegram Mini Apps SDK.
+> Запускается локально одной командой,
 > деплоится на Vercel.
 
 **Демо:** <https://shinapro.vercel.app> · Mini App: `/app` · админка: `/admin`
